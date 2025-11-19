@@ -18,6 +18,7 @@ typedef struct {
     int sata_usage;
     int entry_time;
     int curr_instruction;
+    int priority;
     queue * curr_queue;
     usage_block * memory_block;
 } process;
@@ -31,20 +32,24 @@ typedef struct {
 typedef struct {
     int curr_time;
     bool preemptive_mode; // indicates whether preemptive scheduling is enabled
+    int preemptive_time; // time to remove current process
     queue * rt_queue;
     queue * user_queue_1;
     queue * user_queue_2;
     queue * user_queue_3;
     queue * user_queue_4;
     queue * user_queue_5;
+    queue * blocked_processes;
     int allocated_blocks; // number of allocated memory blocks (size of array bellow)
     usage_block ** memory_blocks; // array of pointers to memory blocks
-    process * current_process;
+    process * curr_process;
+    resources system_resources;
 } scheduler;
 
 typedef struct {
     process ** processes;
     int process_count;
+    int offset;
 } process_list;
 
 typedef struct {
@@ -55,6 +60,20 @@ typedef struct {
 
 typedef struct {
     int total_space;
-    int file_count;
-    file ** files;
+    file ** files; // nullptrr for empty, size = total_space
 } file_system;
+
+typedef struct {
+    int value;
+    char * name;
+} semaphore;
+
+typedef struct {
+    semaphore scanner;
+    semaphore printer_1;
+    semaphore printer_2;
+    semaphore modem;
+    semaphore sata_1;
+    semaphore sata_2;
+    semaphore sata_3;
+} resources;
