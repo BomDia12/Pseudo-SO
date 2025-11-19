@@ -11,7 +11,6 @@ typedef struct {
 
 typedef struct {
     int pid;
-    int memory_offset;
     int memory_usage;
     int scanner_usage;
     int printer_usage;
@@ -40,6 +39,7 @@ typedef struct {
     queue * user_queue_5;
     int allocated_blocks; // number of allocated memory blocks (size of array bellow)
     usage_block ** memory_blocks; // array of pointers to memory blocks
+    process * current_process;
 } scheduler;
 
 typedef struct {
