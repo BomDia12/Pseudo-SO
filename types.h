@@ -1,0 +1,60 @@
+#pragma once
+
+#include <cstdint>
+
+typedef struct {
+    int priority;
+    int curr_size;
+    process * processes[100];
+    int alloted_time;
+} queue;
+
+typedef struct {
+    int pid;
+    int memory_offset;
+    int memory_usage;
+    int scanner_usage;
+    int printer_usage;
+    int modem_usage;
+    int sata_usage;
+    int entry_time;
+    int curr_instruction;
+    queue * curr_queue;
+    usage_block * memory_block;
+} process;
+
+typedef struct {
+    int offset;
+    int size;
+    process * user;
+} usage_block;
+
+typedef struct {
+    int curr_time;
+    bool preemptive_mode; // indicates whether preemptive scheduling is enabled
+    queue * rt_queue;
+    queue * user_queue_1;
+    queue * user_queue_2;
+    queue * user_queue_3;
+    queue * user_queue_4;
+    queue * user_queue_5;
+    int allocated_blocks; // number of allocated memory blocks (size of array bellow)
+    usage_block ** memory_blocks; // array of pointers to memory blocks
+} scheduler;
+
+typedef struct {
+    process ** processes;
+    int process_count;
+} process_list;
+
+typedef struct {
+    char * name;
+    int start_offset;
+    int size;
+} file;
+
+typedef struct {
+    int total_space;
+    int file_count;
+    file ** files;
+} file_system;
