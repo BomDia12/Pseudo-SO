@@ -11,16 +11,16 @@ typedef struct {
 
 typedef struct {
     int pid;
-    int memory_usage;
+    int entry_time;
+    int priority;
+    usage_block * memory_block;
     int scanner_usage;
     int printer_usage;
     int modem_usage;
+    int memory_usage;
     int sata_usage;
-    int entry_time;
     int curr_instruction;
-    int priority;
     queue * curr_queue;
-    usage_block * memory_block;
 } process;
 
 typedef struct {
