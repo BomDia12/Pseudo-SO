@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <stdbool.h>
 
 typedef struct {
     int priority;
@@ -56,10 +57,13 @@ typedef struct {
     char * name;
     int start_offset;
     int size;
+    int pid; // owner process id
+    bool user_file;
 } file;
 
 typedef struct {
     int total_space;
+    int file_count;
     file ** files; // nullptrr for empty, size = total_space
 } file_system;
 
@@ -77,3 +81,8 @@ typedef struct {
     semaphore sata_2;
     semaphore sata_3;
 } resources;
+
+typedef struct {
+    int * bits;
+    int size;
+} bitmap;
