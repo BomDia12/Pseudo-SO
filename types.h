@@ -13,6 +13,7 @@ typedef struct semaphore semaphore;
 typedef struct resources resources;
 typedef struct scheduler scheduler;
 typedef struct file file;
+typedef struct bitmap bitmap;
 
 struct queue {
     int priority;
@@ -93,7 +94,7 @@ struct resources{
     semaphore sata_3;
 };
 
-typedef struct {
+struct bitmap{
     int * bits;
     int size;
-} bitmap;
+};
