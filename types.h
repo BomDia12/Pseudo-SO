@@ -67,12 +67,15 @@ struct file{
     char * name;
     int start_offset;
     int size;
-} ;
+    int pid; // owner process id
+    bool user_file;
+} file;
 
 struct file_system{
     int total_space;
-    // ** files; // nullptrr for empty, size = total_space
-} ;
+    int file_count;
+    file ** files; // nullptrr for empty, size = total_space
+} file_system;
 
 struct semaphore{
     int value;
@@ -87,4 +90,9 @@ struct resources{
     semaphore sata_1;
     semaphore sata_2;
     semaphore sata_3;
-} ;
+};
+
+typedef struct {
+    int * bits;
+    int size;
+} bitmap;

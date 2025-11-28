@@ -1,0 +1,10 @@
+#pragma once
+
+#include "./types.h"
+#include <string.h>
+
+bitmap * get_user_bitmap();
+bitmap * get_realtime_bitmap();
+
+void allocate_memory(process * proc);
+void remove_memory(process * proc);
