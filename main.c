@@ -1,4 +1,4 @@
-#include "disk_reader.h"
+#include "reader.h"
 
 int main (int argc, char *argv[]) {
 
@@ -6,8 +6,8 @@ int main (int argc, char *argv[]) {
         printf("Error: Devem ser informados dois arquivos!\n");
         return 1;
     }
-
-    read_procecss_file(argv[0]);
+    printf("Bem vindo, querido(a)!\n");
+    read_process_file(argv[1]);
 
     return 0;
 }
