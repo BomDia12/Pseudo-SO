@@ -48,7 +48,8 @@ void add_file(bitmap * bitmap, const char * filename, int size, process * owner)
                 }
                 // Create new file
                 file * new_file = (file *)malloc(sizeof(file));
-                new_file->name = strdup(filename);
+                new_file->name = (char *)malloc(strlen(filename) + 1);
+                strcpy(new_file->name, filename);
                 new_file->start_offset = start_index;
                 new_file->size = size;
                 new_file->pid = owner->pid;
