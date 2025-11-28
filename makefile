@@ -13,7 +13,9 @@ CFLAGS = -Wall -Wextra -std=c11 -g
 # Coloque aqui SOMENTE os arquivos que você quer compilar
 SRCS = \
     main.c \
-    disk_reader.c 
+    reader.c \
+	filesystem.c \
+	memory.c
 
 # Gera .o manualmente a partir dos .c definidos acima
 OBJS = $(SRCS:.c=.o)

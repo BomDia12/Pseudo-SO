@@ -1,6 +1,7 @@
 #pragma once
 
-#include "./types.h"
+#include "types.h"
+#include <stdlib.h>
 #include <string.h>
 
 file_system * get_file_system();
