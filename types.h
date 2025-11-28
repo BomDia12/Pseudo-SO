@@ -1,36 +1,46 @@
 #pragma once
-
-#include <cstdint>
+#include <stdint.h>
+#include <stdio.h>
 #include <stdbool.h>
 
-typedef struct {
+typedef struct process process;
+typedef struct queue queue;
+typedef struct usage_block usage_block;
+typedef struct process_list process_list;
+typedef struct fs_file fs_file;
+typedef struct file_system file_system;
+typedef struct semaphore semaphore;
+typedef struct resources resources;
+typedef struct scheduler scheduler;
+
+struct queue {
     int priority;
     int curr_size;
     process * processes[100];
     int alloted_time;
-} queue;
+} ;
 
-typedef struct {
+struct process{
     int pid;
-    int memory_usage;
+    int entry_time;
+    int priority;
+    usage_block * memory_block;
     int scanner_usage;
     int printer_usage;
     int modem_usage;
+    int memory_usage;
     int sata_usage;
-    int entry_time;
     int curr_instruction;
-    int priority;
     queue * curr_queue;
-    usage_block * memory_block;
-} process;
+} ;
 
-typedef struct {
+struct usage_block{
     int offset;
     int size;
     process * user;
-} usage_block;
+} ;
 
-typedef struct {
+struct scheduler{
     int curr_time;
     bool preemptive_mode; // indicates whether preemptive scheduling is enabled
     int preemptive_time; // time to remove current process
@@ -44,16 +54,16 @@ typedef struct {
     int allocated_blocks; // number of allocated memory blocks (size of array bellow)
     usage_block ** memory_blocks; // array of pointers to memory blocks
     process * curr_process;
-    resources system_resources;
-} scheduler;
+    resources* system_resources;
+} ;
 
-typedef struct {
+struct process_list {
     process ** processes;
     int process_count;
     int offset;
-} process_list;
+} ;
 
-typedef struct {
+struct file{
     char * name;
     int start_offset;
     int size;
@@ -61,18 +71,18 @@ typedef struct {
     bool user_file;
 } file;
 
-typedef struct {
+struct file_system{
     int total_space;
     int file_count;
     file ** files; // nullptrr for empty, size = total_space
 } file_system;
 
-typedef struct {
+struct semaphore{
     int value;
     char * name;
-} semaphore;
+} ;
 
-typedef struct {
+struct resources{
     semaphore scanner;
     semaphore printer_1;
     semaphore printer_2;
@@ -80,7 +90,7 @@ typedef struct {
     semaphore sata_1;
     semaphore sata_2;
     semaphore sata_3;
-} resources;
+};
 
 typedef struct {
     int * bits;
