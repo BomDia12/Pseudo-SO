@@ -12,6 +12,7 @@ typedef struct file_system file_system;
 typedef struct semaphore semaphore;
 typedef struct resources resources;
 typedef struct scheduler scheduler;
+typedef struct file file;
 
 struct queue {
     int priority;
@@ -69,13 +70,13 @@ struct file{
     int size;
     int pid; // owner process id
     bool user_file;
-} file;
+};
 
 struct file_system{
     int total_space;
     int file_count;
     file ** files; // nullptrr for empty, size = total_space
-} file_system;
+};
 
 struct semaphore{
     int value;
