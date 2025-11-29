@@ -56,3 +56,47 @@ process_list read_process_file(const char * file_name) {
     };
     return list;
 }
+
+void read_instructions_file(const char *file_name) {
+    FILE* instructions_file = fopen(file_name, "r");
+    int number_of_lines = get_number_of_lines(instructions_file);
+    rewind(instructions_file);
+    char line[256];
+    int blocks_on_disk, segments_num;
+
+    fgets(line, sizeof(line), instructions_file);
+    sscanf(line, "%d", &blocks_on_disk);
+
+
+    fgets(line, sizeof(line), instructions_file);
+    sscanf(line, "%d", &segments_num);
+
+    for(int i =0; i < segments_num; i++) {
+        fgets(line, sizeof(line), instructions_file);
+        char file_name;
+        int first_block, number_of_blocks;
+        sscanf(
+            line,
+            "%c,%d,%d",
+            &file_name,
+            &first_block,
+            &number_of_blocks
+        );
+    }
+
+    for(int i =0; i < number_of_lines - segments_num - 2; i++) {
+        fgets(line, sizeof(line), instructions_file);
+        char file_name;
+        int pid, opcode, number_of_created_blocks;
+        sscanf(
+            line,
+            "%d,%d,%c,%d",
+            &pid,
+            &opcode,
+            &file_name,
+            &number_of_created_blocks
+        );
+    }
+        
+    fclose(instructions_file);
+}
