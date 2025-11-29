@@ -18,37 +18,36 @@ process_list read_process_file(const char * file_name) {
     process** processes = malloc(sizeof(process*) * number_of_process);
     char line[256];
     for(int i =0; i < number_of_process; i++) {
-
-        int entry_time, priority ,mem_size, scanner, printer, modem, mem_usage, sata;
         fgets(line, sizeof(line), processes_file);
+        printf("linha %s", line);
+
+        int entry_time, priority, total_instructions, scanner, printer, modem, mem_usage, sata;
         sscanf(
             line,
             "%d,%d,%d,%d,%d,%d,%d,%d",
             &entry_time,
             &priority,
-            &mem_size,
+            &total_instructions,
+            &mem_usage,
             &scanner,
             &printer,
             &modem,
-            &mem_usage,
             &sata
         );
-        printf("linha %s", line);
+
         processes[i] = malloc(sizeof(process));
         processes[i]->pid = i;
         processes[i]->entry_time = entry_time;
-        processes[i]->priority =priority;
-        processes[i]->memory_block = malloc(sizeof(usage_block));
-        processes[i]->memory_block->size = mem_size;
-        //todo (gabriel): preencher informações memory_block
-        processes[i]->scanner_usage =scanner;
-        processes[i]->printer_usage =printer;
-        processes[i]->modem_usage =modem;
-        processes[i]->memory_usage =mem_usage;
-        processes[i]->sata_usage =sata;
-        //todo (gabriel): preencher informações curr_queue
+        processes[i]->priority = priority;
+        processes[i]->total_instructions = total_instructions;
+        processes[i]->memory_usage = mem_usage;
+        processes[i]->memory_block = NULL;
+        processes[i]->scanner_usage = scanner;
+        processes[i]->printer_usage = printer;
+        processes[i]->modem_usage = modem;
+        processes[i]->sata_usage = sata;
         processes[i]->curr_instruction = 0;
-        processes[i]->curr_queue = malloc(sizeof(queue));
+        processes[i]->curr_queue = NULL;
     }
         
     fclose(processes_file);

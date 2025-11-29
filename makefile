@@ -15,6 +15,7 @@ SRCS = \
     main.c \
     reader.c \
 	filesystem.c \
+	scheduler.c \
 	memory.c
 
 # Gera .o manualmente a partir dos .c definidos acima
