@@ -33,7 +33,6 @@ process_list read_process_file(const char * file_name) {
             &mem_usage,
             &sata
         );
-        printf("linha %s", line);
         processes[i] = malloc(sizeof(process));
         processes[i]->pid = i;
         processes[i]->entry_time = entry_time;

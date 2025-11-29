@@ -1,5 +1,5 @@
 #include "reader.h"
-
+#include "printf.h"
 int main (int argc, char *argv[]) {
 
     if (argc < 2) {
@@ -7,7 +7,7 @@ int main (int argc, char *argv[]) {
         return 1;
     }
     printf("Bem vindo, querido(a)!\n");
-    read_process_file(argv[1]);
-
+    process_list list = read_process_file(argv[1]);
+    print_processes(list);
     return 0;
 }
