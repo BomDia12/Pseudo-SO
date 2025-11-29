@@ -18,7 +18,7 @@ void print_process_info(process* process) {
     printf("printers: %d\n", process->printer_usage);
     printf("modems: %d\n", process->modem_usage);
     printf("sata: %d\n", process->sata_usage);
-    printf("-------------------------------\n");
+    printf("-------------------------------\n\n");
 }
 
 

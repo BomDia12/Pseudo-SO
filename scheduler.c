@@ -93,6 +93,7 @@ void scheduler_process(process_list * plist) {
                 remove_memory(sched->curr_process);
                 // TODO: release resources
                 printf("Processo %d finalizado!\n", sched->curr_process->pid);
+                printf("-------------------------------\n\n");
                 sched->curr_process = NULL;
                 new_process = select_next_process(sched);
             } else if (sched->preemptive_mode && sched->curr_time == sched->preemptive_time) {
@@ -212,8 +213,6 @@ void enqueue(queue * q, process * p) {
 
     q->last = item;
     q->curr_size++;
-    printf("processo alocado!\n");
-    printf("-------------------------------\n");
 }
 
 int resources_available(process * proc, scheduler * sched) {
