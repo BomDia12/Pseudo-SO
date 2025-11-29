@@ -195,6 +195,8 @@ void enqueue(queue * q, process * p) {
 
     q->last = item;
     q->curr_size++;
+    printf("processo alocado!\n");
+    printf("-------------------------------\n");
 }
 
 int resources_available(process * proc, scheduler * sched) {
@@ -226,6 +228,7 @@ void block_process(process * proc, scheduler * sched) {
 }
 
 void age_processes(scheduler * sched) {   
+    printf("aplicando agging...\n");
     int aging_threshold = 20; // time units after which aging occurs
     queue * queues[] = {
         &sched->user_queue_5,
