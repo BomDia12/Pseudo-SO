@@ -12,10 +12,23 @@ bitmap * new_bitmap(int size) {
     return bm;
 }
 //todo (nicolas): add logica retorno
+// errors:
+// 0 - success
+// 1 - permission denied
+// 2 - file not found
 int delete_file(bitmap * bitmap, const char * filename, process * owner) {
     file_system * fs = get_file_system();
+    bool file_found = false;
+    bool permission_denied = false;
     for (int i = 0; i < fs->total_space; i++) {
         file * f = fs->files[i];
+        if (f != NULL && strcmp(f->name, filename) == 0) {
+            file_found = true;
+            if (f->pid != owner->pid && owner->priority != 0) {
+                permission_denied = true;
+                break;
+            }
+        }
         if (f != NULL && strcmp(f->name, filename) == 0 && (f->pid == owner->pid || owner->priority == 0)) {
             // Free the space in bitmap
             for (int j = f->start_offset; j < f->start_offset + f->size; j++) {
@@ -29,10 +42,18 @@ int delete_file(bitmap * bitmap, const char * filename, process * owner) {
             return 0;
         }
     }
-    return 0;
+    if (permission_denied) {
+        return 1;
+    }
+    if (!file_found) { 
+        return 2;
+    }
 }
 
 //todo (nicolas): add logica retorno
+// errors:
+// 0 - success
+// 1 - not enough space
 int add_file(bitmap * bitmap, const char * filename, int size, process * owner) {
     file_system * fs = get_file_system();
     int consecutive_free = 0;
@@ -56,6 +77,8 @@ int add_file(bitmap * bitmap, const char * filename, int size, process * owner) 
                 new_file->size = size;
                 new_file->pid = owner->pid;
                 new_file->user_file = (owner->priority != 0);
+                fs->total_space += 1;
+                fs->files = (file **)realloc(fs->files, fs->total_space * sizeof(file *));
                 // Add file to file system
                 for (int k = 0; k < fs->total_space; k++) {
                     if (fs->files[k] == NULL) {
@@ -64,15 +87,29 @@ int add_file(bitmap * bitmap, const char * filename, int size, process * owner) 
                         return 0;
                     }
                 }
-                // If we reach here, no space in file system array
-                free(new_file->name);
-                free(new_file);
-                return 0;
             }
         } else {
             consecutive_free = 0;
         }
     }
-    return 0;
+    return 1;
     // If we reach here, allocation failed
+}
+
+void mount_file_system(bitmap * bitmap, file * file_to_mount) {
+    file_system * fs = get_file_system();
+    // Mark the space in bitmap as used
+    for (int i = file_to_mount->start_offset; i < file_to_mount->start_offset + file_to_mount->size; i++) {
+        bitmap->bits[i] = 1;
+    }
+    // Add file to file system
+    fs->total_space += 1;
+    fs->files = (file **)realloc(fs->files, fs->total_space * sizeof(file *));
+    for (int k = 0; k < fs->total_space; k++) {
+        if (fs->files[k] == NULL) {
+            fs->files[k] = file_to_mount;
+            fs->file_count++;
+            return;
+        }
+    }
 }

@@ -12,6 +12,9 @@ bitmap * get_realtime_bitmap() {
     return &mem_bitmap;
 }
 //TODO (nicolas): add logica 
+// errors:
+// 0 - success
+// 1 - not enough space
 int allocate_memory(process * proc) {
     bitmap * mem_bitmap;
     int required_blocks = proc->memory_usage;
@@ -46,7 +49,7 @@ int allocate_memory(process * proc) {
     }
     // If we reach here, allocation failed
     proc->memory_block = NULL;
-    return 0;
+    return 1;
 }
 
 void remove_memory(process * proc) {
