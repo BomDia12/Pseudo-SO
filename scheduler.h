@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "memory.h"
+#include "print_info.h"
 
 scheduler * get_scheduler();
 

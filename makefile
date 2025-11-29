@@ -16,7 +16,8 @@ SRCS = \
     reader.c \
 	filesystem.c \
 	scheduler.c \
-	memory.c
+	memory.c \
+	print_info.c
 
 # Gera .o manualmente a partir dos .c definidos acima
 OBJS = $(SRCS:.c=.o)

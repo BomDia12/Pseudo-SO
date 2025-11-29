@@ -19,8 +19,6 @@ process_list read_process_file(const char * file_name) {
     char line[256];
     for(int i =0; i < number_of_process; i++) {
         fgets(line, sizeof(line), processes_file);
-        printf("linha %s", line);
-
         int entry_time, priority, total_instructions, scanner, printer, modem, mem_usage, sata;
         sscanf(
             line,
@@ -34,7 +32,6 @@ process_list read_process_file(const char * file_name) {
             &modem,
             &sata
         );
-
         processes[i] = malloc(sizeof(process));
         processes[i]->pid = i;
         processes[i]->entry_time = entry_time;
