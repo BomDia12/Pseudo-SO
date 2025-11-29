@@ -14,6 +14,7 @@ typedef struct resources resources;
 typedef struct scheduler scheduler;
 typedef struct file file;
 typedef struct bitmap bitmap;
+typedef struct file_list file_list;
 
 struct queue {
     int priority;
@@ -63,7 +64,7 @@ struct process_list {
     process ** processes;
     int process_count;
     int offset;
-} ;
+};
 
 struct file{
     char * name;
@@ -77,6 +78,11 @@ struct file_system{
     int total_space;
     int file_count;
     file ** files; // nullptrr for empty, size = total_space
+};
+
+struct file_list {
+    file ** files;
+    int files_count;
 };
 
 struct semaphore{

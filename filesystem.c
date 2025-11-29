@@ -20,7 +20,7 @@ int delete_file(bitmap * bitmap, const char * filename, process * owner) {
     file_system * fs = get_file_system();
     bool file_found = false;
     bool permission_denied = false;
-    for (int i = 0; i < fs->total_space; i++) {
+    for (int i = 0; i < fs->file_count; i++) {
         file * f = fs->files[i];
         if (f != NULL && strcmp(f->name, filename) == 0) {
             file_found = true;
@@ -77,8 +77,6 @@ int add_file(bitmap * bitmap, const char * filename, int size, process * owner) 
                 new_file->size = size;
                 new_file->pid = owner->pid;
                 new_file->user_file = (owner->priority != 0);
-                fs->total_space += 1;
-                fs->files = (file **)realloc(fs->files, fs->total_space * sizeof(file *));
                 // Add file to file system
                 for (int k = 0; k < fs->total_space; k++) {
                     if (fs->files[k] == NULL) {
@@ -96,20 +94,23 @@ int add_file(bitmap * bitmap, const char * filename, int size, process * owner) 
     // If we reach here, allocation failed
 }
 
-void mount_file_system(bitmap * bitmap, file * file_to_mount) {
+void mount_file_system(bitmap * bitmap, file_list * files_to_mount) {
     file_system * fs = get_file_system();
-    // Mark the space in bitmap as used
-    for (int i = file_to_mount->start_offset; i < file_to_mount->start_offset + file_to_mount->size; i++) {
-        bitmap->bits[i] = 1;
-    }
-    // Add file to file system
-    fs->total_space += 1;
-    fs->files = (file **)realloc(fs->files, fs->total_space * sizeof(file *));
-    for (int k = 0; k < fs->total_space; k++) {
-        if (fs->files[k] == NULL) {
-            fs->files[k] = file_to_mount;
-            fs->file_count++;
-            return;
+    fs->total_space = bitmap->size;
+    fs->files = (file **)calloc(fs->total_space, sizeof(file *));
+    for (int i = 0; i < files_to_mount->files_count; i++) {
+        file * f = files_to_mount->files[i];
+        // Mark space in bitmap
+        for (int j = f->start_offset; j < f->start_offset + f->size; j++) {
+            bitmap->bits[j] = 1;
+        }
+        // Add file to file system
+        for (int k = 0; k < fs->total_space; k++) {
+            if (fs->files[k] == NULL) {
+                fs->files[k] = f;
+                fs->file_count++;
+                break;
+            }
         }
     }
 }
