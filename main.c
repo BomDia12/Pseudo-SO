@@ -1,5 +1,4 @@
 #include "reader.h"
-#include "printf.h"
 #include "scheduler.h"
 
 int main (int argc, char *argv[]) {
@@ -9,8 +8,6 @@ int main (int argc, char *argv[]) {
         return 1;
     }
     printf("Bem vindo, querido(a)!\n");
-    process_list list = read_process_file(argv[1]);
-    print_processes(list);
     process_list processes =  read_process_file(argv[1]);
     scheduler_process(&processes);
 

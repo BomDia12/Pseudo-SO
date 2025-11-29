@@ -1,4 +1,4 @@
-#include "./scheduler.h"
+#include "scheduler.h"
 
 scheduler * get_scheduler() {
     static scheduler sched = {
@@ -118,6 +118,7 @@ void scheduler_process(process_list * plist) {
 }
 
 void schedule_process(process * process, scheduler * scheduler) {
+    print_process_info(process);
     switch (process->priority) {
         case 0:
             enqueue(&scheduler->rt_queue, process);
@@ -180,6 +181,7 @@ process * dequeue(queue * q) {
 }
 
 void enqueue(queue * q, process * p) {
+    printf("Alocando processo %d na fila %d...\n", p->pid, q->priority);
     queue_item * item = (queue_item *) malloc(sizeof(queue_item));
     item->process = p;
     item->next = NULL;
