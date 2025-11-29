@@ -77,19 +77,22 @@ scheduler * get_scheduler() {
 void scheduler_process(process_list * plist) {
     scheduler * sched = get_scheduler();
 
-    while (plist->offset < plist->process_count) {
+    while (true) {
 
-        while (plist->processes[plist->offset]->entry_time == sched->curr_time) {
+        while (plist->offset < plist->process_count && plist->processes[plist->offset]->entry_time == sched->curr_time) {
             schedule_process(plist->processes[plist->offset], sched);
+            print_process_info(plist->processes[plist->offset]);
             plist->offset++;
         }
 
         process * new_process = NULL;
         if (sched->curr_process) {
+            printf("Executando processo %d na instrução %d...\n", sched->curr_process->pid, sched->curr_process->curr_instruction);
             sched->curr_process->curr_instruction++;
             if (sched->curr_process->curr_instruction >= sched->curr_process->total_instructions) {
                 remove_memory(sched->curr_process);
                 // TODO: release resources
+                printf("Processo %d finalizado!\n", sched->curr_process->pid);
                 sched->curr_process = NULL;
                 new_process = select_next_process(sched);
             } else if (sched->preemptive_mode && sched->curr_time == sched->preemptive_time) {
@@ -114,11 +117,25 @@ void scheduler_process(process_list * plist) {
         }
 
         sched->curr_time++;
+
+        if (sched->curr_process == NULL && plist->offset >= plist->process_count) {
+            bool all_queues_empty = 
+                sched->rt_queue.curr_size == 0 &&
+                sched->user_queue_1.curr_size == 0 &&
+                sched->user_queue_2.curr_size == 0 &&
+                sched->user_queue_3.curr_size == 0 &&
+                sched->user_queue_4.curr_size == 0 &&
+                sched->user_queue_5.curr_size == 0 &&
+                sched->blocked_processes.count == 0;
+            if (all_queues_empty) {
+                printf("Todos os processos foram finalizados!\n");
+                break;
+            }
+        }
     }
 }
 
 void schedule_process(process * process, scheduler * scheduler) {
-    print_process_info(process);
     switch (process->priority) {
         case 0:
             enqueue(&scheduler->rt_queue, process);
@@ -228,7 +245,6 @@ void block_process(process * proc, scheduler * sched) {
 }
 
 void age_processes(scheduler * sched) {   
-    printf("aplicando agging...\n");
     int aging_threshold = 20; // time units after which aging occurs
     queue * queues[] = {
         &sched->user_queue_5,
