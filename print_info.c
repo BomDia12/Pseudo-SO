@@ -11,7 +11,7 @@ void print_process_info(process* process) {
     printf("dispatcher =>\n");
     printf("Pid: %d\n", process->pid);
     printf("offset: %d\n", 0);
-    printf("blocks: %d\n", process->memory_block->size);
+    printf("blocks: %d\n", process->memory_usage);
     printf("priority: %d\n", process->priority);
     printf("time: %d\n", process->entry_time);
     printf("scanners: %d\n", process->scanner_usage);
