@@ -15,6 +15,7 @@ SRCS = \
     main.c \
     reader.c \
 	filesystem.c \
+	scheduler.c \
 	memory.c \
 	print_info.c
 
