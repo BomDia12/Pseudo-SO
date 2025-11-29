@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-process **read_process_file(const char *file_name);
+process_list read_process_file(const char *file_name);
 int get_number_of_lines(FILE *f);
 
 #endif

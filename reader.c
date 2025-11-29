@@ -11,9 +11,7 @@ int get_number_of_lines(FILE* f) {
     return number_of_lines;
 }
 
-
-
-process** read_process_file(const char * file_name) {
+process_list read_process_file(const char * file_name) {
     FILE* processes_file = fopen(file_name, "r");
     int number_of_process = get_number_of_lines(processes_file);
     rewind(processes_file);
@@ -48,11 +46,16 @@ process** read_process_file(const char * file_name) {
         processes[i]->modem_usage =modem;
         processes[i]->memory_usage =mem_usage;
         processes[i]->sata_usage =sata;
-        //todo (gabriel): preencher informações curr_instr e curr_queue
-        processes[i]->curr_instruction = i;
+        //todo (gabriel): preencher informações curr_queue
+        processes[i]->curr_instruction = 0;
         processes[i]->curr_queue = malloc(sizeof(queue));
     }
         
     fclose(processes_file);
-    return processes;
+    process_list list = {
+        .processes = processes,
+        .process_count = number_of_process,
+        .offset = 0   
+    };
+    return list;
 }
