@@ -48,6 +48,7 @@ int delete_file(bitmap * bitmap, const char * filename, process * owner) {
     if (!file_found) { 
         return 2;
     }
+    return 0;
 }
 
 //todo (nicolas): add logica retorno
