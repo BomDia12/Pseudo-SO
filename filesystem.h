@@ -7,6 +7,6 @@
 file_system * get_file_system();
 bitmap * new_bitmap(int size);
 
-void delete_file(bitmap * bitmap, const char * filename, process * owner);
+int delete_file(bitmap * bitmap, const char * filename, process * owner);
 
-void add_file(bitmap * bitmap, const char * filename, int size, process * owner);
+int add_file(bitmap * bitmap, const char * filename, int size, process * owner);

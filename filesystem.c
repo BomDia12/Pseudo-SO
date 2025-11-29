@@ -11,8 +11,8 @@ bitmap * new_bitmap(int size) {
     bm->bits = (int *)calloc(size, sizeof(int));
     return bm;
 }
-
-void delete_file(bitmap * bitmap, const char * filename, process * owner) {
+//todo (nicolas): add logica retorno
+int delete_file(bitmap * bitmap, const char * filename, process * owner) {
     file_system * fs = get_file_system();
     for (int i = 0; i < fs->total_space; i++) {
         file * f = fs->files[i];
@@ -26,12 +26,14 @@ void delete_file(bitmap * bitmap, const char * filename, process * owner) {
             free(f);
             fs->files[i] = NULL;
             fs->file_count--;
-            return;
+            return 0;
         }
     }
+    return 0;
 }
 
-void add_file(bitmap * bitmap, const char * filename, int size, process * owner) {
+//todo (nicolas): add logica retorno
+int add_file(bitmap * bitmap, const char * filename, int size, process * owner) {
     file_system * fs = get_file_system();
     int consecutive_free = 0;
     int start_index = -1;
@@ -59,17 +61,18 @@ void add_file(bitmap * bitmap, const char * filename, int size, process * owner)
                     if (fs->files[k] == NULL) {
                         fs->files[k] = new_file;
                         fs->file_count++;
-                        return;
+                        return 0;
                     }
                 }
                 // If we reach here, no space in file system array
                 free(new_file->name);
                 free(new_file);
-                return;
+                return 0;
             }
         } else {
             consecutive_free = 0;
         }
     }
+    return 0;
     // If we reach here, allocation failed
 }

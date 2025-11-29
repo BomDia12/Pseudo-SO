@@ -7,5 +7,5 @@
 bitmap * get_user_bitmap();
 bitmap * get_realtime_bitmap();
 
-void allocate_memory(process * proc);
+int allocate_memory(process * proc);
 void remove_memory(process * proc);

@@ -11,8 +11,8 @@ bitmap * get_realtime_bitmap() {
     static bitmap mem_bitmap = { bits_array, 64 };
     return &mem_bitmap;
 }
-
-void allocate_memory(process * proc) {
+//TODO (nicolas): add logica 
+int allocate_memory(process * proc) {
     bitmap * mem_bitmap;
     int required_blocks = proc->memory_usage;
     if (proc->priority == 0) {
@@ -38,7 +38,7 @@ void allocate_memory(process * proc) {
                 block->size = required_blocks;
                 block->user = proc;
                 proc->memory_block = block;
-                return;
+                return 0;
             }
         } else {
             consecutive_free = 0;
@@ -46,6 +46,7 @@ void allocate_memory(process * proc) {
     }
     // If we reach here, allocation failed
     proc->memory_block = NULL;
+    return 0;
 }
 
 void remove_memory(process * proc) {
