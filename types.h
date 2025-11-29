@@ -12,11 +12,12 @@ typedef struct resources resources;
 typedef struct scheduler scheduler;
 typedef struct usage_block usage_block;
 typedef struct process_list process_list;
-typedef struct fs_file fs_file;
 typedef struct file_system file_system;
 typedef struct file file;
 typedef struct bitmap bitmap;
 typedef struct file_list file_list;
+typedef struct operation operation;
+typedef struct file_system_manager file_system_manager;
 
 struct queue {
     int priority;
@@ -119,4 +120,17 @@ struct file_list {
 struct bitmap {
     int * bits;
     int size;
+};
+
+struct operation {
+    int pid;
+    int opcode;
+    char * file_name;
+    int blocks_to_create;
+};
+
+struct file_system_manager {
+    int num_total_blocks;
+    file_list file_list;
+    operation ** operations_list;
 };

@@ -57,7 +57,7 @@ process_list read_process_file(const char * file_name) {
     return list;
 }
 
-void read_instructions_file(const char *file_name) {
+file_system_manager read_instructions_file(const char *file_name) {
     FILE* instructions_file = fopen(file_name, "r");
     int number_of_lines = get_number_of_lines(instructions_file);
     rewind(instructions_file);
@@ -71,6 +71,7 @@ void read_instructions_file(const char *file_name) {
     fgets(line, sizeof(line), instructions_file);
     sscanf(line, "%d", &segments_num);
 
+    file ** files = malloc(sizeof(file *) * segments_num);
     for(int i =0; i < segments_num; i++) {
         fgets(line, sizeof(line), instructions_file);
         char file_name;
@@ -82,21 +83,43 @@ void read_instructions_file(const char *file_name) {
             &first_block,
             &number_of_blocks
         );
+        files[i] = malloc(sizeof(file));
+        files[i]->name = &file_name;
+        files[i]->pid = -1;
+        files[i]->start_offset = first_block;
+        files[i]->size = number_of_blocks;
     }
 
-    for(int i =0; i < number_of_lines - segments_num - 2; i++) {
+    int number_of_operations = number_of_lines - segments_num - 2;
+    operation ** operations_list = malloc(sizeof(operation *) * number_of_operations);
+    for(int i =0; i < number_of_operations; i++) {
         fgets(line, sizeof(line), instructions_file);
         char file_name;
-        int pid, opcode, number_of_created_blocks;
+        int pid, opcode, number_blocks_to_create;
         sscanf(
             line,
             "%d,%d,%c,%d",
             &pid,
             &opcode,
             &file_name,
-            &number_of_created_blocks
+            &number_blocks_to_create
         );
+        operations_list[i] = malloc(sizeof(operation));
+        operations_list[i]->pid = pid;
+        operations_list[i]->opcode=opcode;
+        operations_list[i]->file_name=&file_name;
+        operations_list[i]->blocks_to_create = number_blocks_to_create;
     }
-        
+
     fclose(instructions_file);
+    file_system_manager manager = {
+        .num_total_blocks = blocks_on_disk,
+        .file_list = {
+            .files_count = segments_num,
+            .files = files
+        },
+        .operations_list = operations_list
+
+    };
+    return manager;
 }

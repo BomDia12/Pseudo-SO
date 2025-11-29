@@ -9,6 +9,7 @@ int main (int argc, char *argv[]) {
     }
     printf("Bem vindo, querido(a)!\n");
     process_list processes =  read_process_file(argv[1]);
+    file_system_manager manager = read_instructions_file(argv[2]);
     scheduler_process(&processes);
 
     return 0;
