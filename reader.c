@@ -47,6 +47,7 @@ process_list read_process_file(const char * file_name) {
         processes[i]->modem_usage = modem;
         processes[i]->sata_usage = sata;
         processes[i]->curr_instruction = 0;
+        processes[i]->last_promotion_time = entry_time;
         processes[i]->curr_queue = NULL;
     }
         
