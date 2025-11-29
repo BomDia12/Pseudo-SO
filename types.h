@@ -16,6 +16,7 @@ typedef struct fs_file fs_file;
 typedef struct file_system file_system;
 typedef struct file file;
 typedef struct bitmap bitmap;
+typedef struct file_list file_list;
 
 struct queue {
     int priority;
@@ -108,6 +109,11 @@ struct file_system {
     int total_space;
     int file_count;
     file ** files; // nullptrr for empty, size = total_space
+};
+
+struct file_list {
+    file ** files;
+    int files_count;
 };
 
 struct bitmap {
